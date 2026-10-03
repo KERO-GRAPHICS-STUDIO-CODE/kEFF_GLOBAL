@@ -47,11 +47,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-900 overflow-x-hidden">
+    <div className="app-shell flex flex-col min-h-screen font-sans text-slate-900 overflow-x-hidden">
       {/* Sleek App Header */}
-      <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-slate-200 px-4 h-16 flex items-center justify-between shadow-sm">
+      <header className="sticky top-0 z-50 w-full border-b border-white/70 bg-white/70 px-4 h-[4.5rem] flex items-center justify-between shadow-sm backdrop-blur-2xl">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 shrink-0">
+          <div className="brand-mark size-9 rounded-xl flex items-center justify-center shadow-lg shrink-0">
              <span className="text-white font-black text-lg">K</span>
           </div>
           <Link to="/" className="text-lg font-bold tracking-tight text-slate-800">
@@ -95,7 +95,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Sleek Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200 px-6 py-2 pb-safe">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/80 bg-white/75 px-6 py-2 pb-safe backdrop-blur-2xl">
         <div className="max-w-lg mx-auto flex justify-between items-center text-slate-400">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;

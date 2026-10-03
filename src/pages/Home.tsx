@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Smartphone, ShieldCheck, Zap, Loader2, Search as SearchIcon, TrendingUp, Sparkles, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -18,6 +18,8 @@ interface Listing {
 export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pointer, setPointer] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLElement>(null);
 
   const fetchListings = async () => {
     const path = 'listings';
@@ -46,17 +48,24 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-700">
-      {/* Hero / Banner */}
-      <section className="relative overflow-hidden rounded-[3rem] bg-indigo-600 p-10 text-white shadow-2xl shadow-indigo-100 group">
-        <div className="relative z-10 space-y-6">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+    <div
+      className="flex flex-col gap-10 animate-in fade-in duration-700"
+      onPointerMove={(event) => {
+        const rect = heroRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        setPointer({ x: (event.clientX - rect.left) / rect.width - 0.5, y: (event.clientY - rect.top) / rect.height - 0.5 });
+      }}
+    >
+      <section ref={heroRef} className="hero-shell relative overflow-hidden rounded-[2.5rem] p-7 text-white shadow-2xl shadow-indigo-950/10 sm:p-11 group">
+        <div className="relative z-10 max-w-xl space-y-7" style={{ transform: `perspective(900px) rotateX(${pointer.y * -2}deg) rotateY(${pointer.x * 3}deg)` }}>
+          <div className="eyebrow inline-flex items-center gap-2 rounded-full px-3 py-1.5">
              <Sparkles className="w-3 h-3 text-indigo-300" />
              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-100">Premium Tech Hub</span>
           </div>
           <div className="space-y-1">
-             <h1 className="text-5xl font-black tracking-tighter leading-[0.85] italic">Premium Devices<br/>& Accessories.</h1>
-             <p className="text-indigo-100 text-sm font-medium max-w-[220px] leading-relaxed pt-2">
+             <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-indigo-200">The considered tech marketplace</p>
+             <h1 className="text-5xl font-black tracking-[-0.07em] leading-[0.88] sm:text-7xl">Premium devices<br/><span className="text-indigo-200">with presence.</span></h1>
+             <p className="max-w-[280px] pt-2 text-sm font-medium leading-relaxed text-indigo-100 sm:text-base">
                 The elite peer-to-peer marketplace for authenticated tech and gear.
              </p>
           </div>
@@ -69,25 +78,28 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-indigo-400 rounded-full blur-3xl opacity-40 group-hover:scale-150 transition-transform duration-1000" />
-        <Smartphone className="absolute -right-10 -bottom-10 w-64 h-64 text-white opacity-10 transform -rotate-12 group-hover:rotate-0 transition-transform duration-1000" />
+        <div className="hero-orbit hero-orbit-one" />
+        <div className="hero-orbit hero-orbit-two" />
+        <div className="hero-device" style={{ transform: `translate3d(${pointer.x * -24}px, ${pointer.y * -18}px, 0) rotate(${pointer.x * 8 - 12}deg)` }}>
+          <Smartphone className="size-40 text-white/80" strokeWidth={1} />
+        </div>
       </section>
 
       {/* Trust Badges - Bento Style */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sleek flex flex-col items-center gap-2 text-center group hover:border-indigo-100 transition-colors">
+      <div className="grid grid-cols-3 gap-3 sm:gap-4">
+        <div className="glass-card rounded-[1.75rem] p-4 flex flex-col items-center gap-3 text-center group transition-transform hover:-translate-y-1 sm:p-5">
           <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center group-hover:bg-green-100 transition-colors">
             <ShieldCheck className="w-6 h-6 text-green-600" />
           </div>
           <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest leading-tight">Secure<br/>Escrow</p>
         </div>
-        <div className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sleek flex flex-col items-center gap-2 text-center group hover:border-indigo-100 transition-colors">
+        <div className="glass-card rounded-[1.75rem] p-4 flex flex-col items-center gap-3 text-center group transition-transform hover:-translate-y-1 sm:p-5">
           <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
             <Zap className="w-6 h-6 text-indigo-600" />
           </div>
           <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest leading-tight">Verified<br/>Sellers</p>
         </div>
-        <div className="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sleek flex flex-col items-center gap-2 text-center group hover:border-indigo-100 transition-colors">
+        <div className="glass-card rounded-[1.75rem] p-4 flex flex-col items-center gap-3 text-center group transition-transform hover:-translate-y-1 sm:p-5">
           <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
             <Globe className="w-6 h-6 text-blue-600" />
           </div>

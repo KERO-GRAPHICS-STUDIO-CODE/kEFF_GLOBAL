@@ -54,7 +54,13 @@ async function startServer() {
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        // This custom Express server does not own Vite's upgrade handler.
+        // Disable the client HMR socket so the preview does not retry a socket
+        // that can never be opened through the middleware-only setup.
+        hmr: false,
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);
