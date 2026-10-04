@@ -2,48 +2,61 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --color-brand: #6d5dfc;
-  --color-brand-light: #efedff;
-  --color-brand-dark: #4036a8;
+
+  --color-calabar-green-lush: #1a4a2b;
+  --color-calabar-blue-bright: #0077b6;
+  --color-calabar-earth-warm: #a67c52;
+
+  --color-carnival-red: #ff3333;
+  --color-carnival-green: #33cc33;
+  --color-carnival-orange: #ff9900;
+  --color-carnival-blue: #0066ff;
+  --color-carnival-yellow: #ffcc00;
+
+  --color-glass-light: rgba(255, 255, 255, 0.7);
+  --color-glass-dark: rgba(30, 41, 59, 0.7);
 }
 
 @layer base {
+  :root {
+    --bg-color: #f6f7fb;
+    --text-color: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.62);
+    --glass-border: rgba(255, 255, 255, 0.86);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --glass-bg: rgba(30, 41, 59, 0.62);
+      --glass-border: rgba(51, 65, 85, 0.86);
+    }
+  }
+
   html {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     overscroll-behavior-y: none;
-    @apply bg-[#f6f7fb];
+    background-color: var(--bg-color);
   }
 
   body {
-    @apply bg-[#f6f7fb] text-slate-900 antialiased font-sans;
-    background-image: radial-gradient(circle at 10% 0%, rgba(109, 93, 252, 0.08), transparent 32rem), radial-gradient(circle at 100% 15%, rgba(45, 212, 191, 0.07), transparent 26rem);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    @apply antialiased font-sans;
   }
-
-  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 }
 
-.app-shell { background: linear-gradient(180deg, rgba(255,255,255,.26), transparent 22rem); }
-.brand-mark { background: linear-gradient(145deg, #8074ff, #4139b5); }
-.glass-card { background: rgba(255,255,255,.62); border: 1px solid rgba(255,255,255,.86); box-shadow: 0 18px 45px rgba(38, 34, 92, .08), inset 0 1px 0 rgba(255,255,255,.85); backdrop-filter: blur(22px); }
-.hero-shell { background: radial-gradient(circle at 76% 15%, rgba(137, 127, 255, .75), transparent 22%), linear-gradient(135deg, #191746 0%, #4036a8 52%, #6d5dfc 100%); isolation: isolate; }
-.hero-shell::after { content: ''; position: absolute; inset: 0; z-index: -1; opacity: .2; background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px); background-size: 36px 36px; mask-image: linear-gradient(135deg, black, transparent 72%); }
-.eyebrow { border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.1); backdrop-filter: blur(16px); }
-.hero-orbit { position: absolute; border-radius: 999px; pointer-events: none; filter: blur(.2px); }
-.hero-orbit-one { width: 20rem; height: 20rem; right: -4rem; bottom: -7rem; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 0 0 22px rgba(255,255,255,.04), 0 0 0 44px rgba(255,255,255,.025); animation: orbit-float 8s ease-in-out infinite; }
-.hero-orbit-two { width: 8rem; height: 8rem; right: 16%; top: 13%; background: radial-gradient(circle at 30% 25%, #d5d1ff, #776cff 44%, rgba(81,67,204,.1) 70%); filter: blur(1px); animation: orb-pulse 5s ease-in-out infinite; }
-.hero-device { position: absolute; right: 9%; bottom: 2.5rem; opacity: .45; transition: transform .2s ease-out; filter: drop-shadow(0 24px 22px rgba(18, 14, 72, .26)); }
-@keyframes orbit-float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(8deg); } }
-@keyframes orb-pulse { 0%,100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.12); opacity: 1; } }
-@media (max-width: 640px) { .hero-device { right: -1rem; bottom: 1rem; opacity: .3; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
-
-/* Custom shadow for Sleek theme */
-.shadow-sleek {
-  shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.1);
+.glassmorphism {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
 }
 
-/* Custom scrollbar for a cleaner feel */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -61,4 +74,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
-
