@@ -24,17 +24,7 @@ A secure financial intermediary and escrow marketplace engineered to eliminate o
 
 ## Environment Variables
 
-Copy the `.env.example` to `.env.local` and populate the required variables:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=your_paystack_public_key
-PAYSTACK_SECRET_KEY=your_paystack_secret_key
-RESEND_API_KEY=your_resend_api_key
-NEXT_PUBLIC_APP_URL=https://rivug.store
-```
+Copy the `.env.example` to `.env.local`
 
 ## Support
 
