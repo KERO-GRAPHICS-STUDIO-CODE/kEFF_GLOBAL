@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Shield, Truck, MapPin, CreditCard, ChevronRight } from 'lucide-react';
+import PaystackPop from '@paystack/inline-js';
 
 interface Product {
   id: string;
@@ -11,14 +12,26 @@ interface Product {
 interface CheckoutProps {
   product: Product;
   onPay: (totalAmount: number) => void;
+  buyerEmail?: string;
+  buyerId?: string;
+  sellerId?: string;
+  orderId?: string;
 }
 
 const NIGERIAN_STATES = [
   'Lagos', 'Abuja', 'Kano', 'Rivers', 'Oyo', 'Enugu', 'Kaduna' // Simplified list for demo
 ];
 
-const Checkout: React.FC<CheckoutProps> = ({ product, onPay }) => {
+const Checkout: React.FC<CheckoutProps> = ({
+  product,
+  onPay,
+  buyerEmail = "buyer@example.com",
+  buyerId = "buyer_123",
+  sellerId = "seller_456",
+  orderId = "order_789"
+}) => {
   const [selectedState, setSelectedState] = useState(NIGERIAN_STATES[0]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const ESCROW_FEE = 1000;
 
@@ -39,6 +52,50 @@ const Checkout: React.FC<CheckoutProps> = ({ product, onPay }) => {
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
+  };
+
+  const handlePayment = () => {
+    setIsProcessing(true);
+
+    // In a real app, this key would be from env vars
+    const paystackKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || 'pk_test_demo';
+
+    const paystack = new PaystackPop();
+    paystack.newTransaction({
+      key: paystackKey,
+      email: buyerEmail,
+      amount: totalAmount * 100, // Paystack expects amount in kobo
+      channels: ['bank_transfer'], // Force virtual account generation
+      metadata: {
+        custom_fields: [
+          {
+            display_name: "Order ID",
+            variable_name: "order_id",
+            value: orderId
+          },
+          {
+            display_name: "Buyer ID",
+            variable_name: "buyer_id",
+            value: buyerId
+          },
+          {
+            display_name: "Seller ID",
+            variable_name: "seller_id",
+            value: sellerId
+          }
+        ]
+      },
+      onSuccess: (transaction: any) => {
+        setIsProcessing(false);
+        // Call the parent handler
+        onPay(totalAmount);
+        console.log("Payment successful", transaction);
+      },
+      onCancel: () => {
+        setIsProcessing(false);
+        console.log("Payment cancelled");
+      }
+    });
   };
 
   return (
@@ -119,12 +176,13 @@ const Checkout: React.FC<CheckoutProps> = ({ product, onPay }) => {
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-20">
         <div className="max-w-lg mx-auto">
           <button
-            onClick={() => onPay(totalAmount)}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98]"
+            onClick={handlePayment}
+            disabled={isProcessing}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <CreditCard className="w-6 h-6" />
-            Pay {formatCurrency(totalAmount)}
-            <ChevronRight className="w-5 h-5 ml-1" />
+            {isProcessing ? "Processing..." : `Pay ${formatCurrency(totalAmount)}`}
+            {!isProcessing && <ChevronRight className="w-5 h-5 ml-1" />}
           </button>
         </div>
       </div>

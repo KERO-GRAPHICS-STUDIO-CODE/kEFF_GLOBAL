@@ -9,6 +9,7 @@ import Checkout from './components/Checkout';
 import Chat from './components/Chat';
 import AudioTnC from './components/AudioTnC';
 import LiveCapture from './components/LiveCapture';
+import OrderRealtime from './components/OrderRealtime';
 
 function AppContent() {
   const [showPreloader, setShowPreloader] = useState(true);
@@ -36,10 +37,11 @@ function AppContent() {
                   <h1 className="text-2xl font-bold">RiVuG Demo Components</h1>
                   <div className="flex flex-col gap-4">
                      <Link to="/checkout" className="bg-indigo-100 text-indigo-700 p-4 rounded-xl font-bold">1. View Checkout Flow</Link>
-                     <Link to="/chat" className="bg-blue-100 text-blue-700 p-4 rounded-xl font-bold">2. View Secure Chat</Link>
-                     <Link to="/tnc" className="bg-amber-100 text-amber-700 p-4 rounded-xl font-bold">3. View Audio T&C</Link>
-                     <Link to="/capture" className="bg-green-100 text-green-700 p-4 rounded-xl font-bold">4. View Live Capture (KYC)</Link>
-                     <Link to="/admin" className="bg-red-100 text-red-700 p-4 rounded-xl font-bold">5. View Admin Dashboard</Link>
+                     <Link to="/order/order_789" className="bg-purple-100 text-purple-700 p-4 rounded-xl font-bold">2. View Order Realtime Status</Link>
+                     <Link to="/chat" className="bg-blue-100 text-blue-700 p-4 rounded-xl font-bold">3. View Secure Chat</Link>
+                     <Link to="/tnc" className="bg-amber-100 text-amber-700 p-4 rounded-xl font-bold">4. View Audio T&C</Link>
+                     <Link to="/capture" className="bg-green-100 text-green-700 p-4 rounded-xl font-bold">5. View Live Capture (KYC)</Link>
+                     <Link to="/admin" className="bg-red-100 text-red-700 p-4 rounded-xl font-bold">6. View Admin Dashboard</Link>
                   </div>
                 </div>
               </PageTransition>
@@ -47,6 +49,11 @@ function AppContent() {
             <Route path="/checkout" element={
               <PageTransition>
                 <Checkout product={demoProduct} onPay={(amt) => alert(`Paying ${amt}`)} />
+              </PageTransition>
+            } />
+            <Route path="/order/:id" element={
+              <PageTransition>
+                <OrderRealtime orderId="order_789" />
               </PageTransition>
             } />
             <Route path="/chat" element={
