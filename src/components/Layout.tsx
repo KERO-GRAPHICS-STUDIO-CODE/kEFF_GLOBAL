@@ -3,8 +3,8 @@ import { Home, Search, MessageSquare, User, PlusCircle, LogIn, LogOut, Package, 
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/AuthContext';
-import { db } from '@/lib/firebase';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -22,20 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     // we listen to rooms where participants include user and has an unread flag
     // For now, let's just listen to rooms and check if lastMessage was not by me?
     // Actually, I'll update the Chat.tsx to set unreadCount in the room doc.
-    const roomsQuery = query(collection(db, 'chats'), where('participants', 'array-contains', user.uid));
-    
-    const unsubscribe = onSnapshot(roomsQuery, (snapshot) => {
-      let count = 0;
-      snapshot.docs.forEach((doc) => {
-        const data = doc.data();
-        if (data.lastSenderId && data.lastSenderId !== user.uid && data.lastMessageStatus !== 'READ') {
-          count++;
-        }
-      });
-      setUnreadCount(count);
-    });
-
-    return unsubscribe;
+    // Firebase removed
   }, [user]);
 
   const navItems = [
@@ -55,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
              <span className="text-white font-black text-lg">K</span>
           </div>
           <Link to="/" className="text-lg font-bold tracking-tight text-slate-800">
-            KUFF <span className="text-indigo-600">GLOBAL</span>
+            RiVuG <span className="text-indigo-600">GLOBAL</span>
           </Link>
         </div>
         

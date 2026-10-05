@@ -50,7 +50,7 @@ export default function InstallPrompt() {
             <Download className="w-6 h-6" />
           </div>
           <div className="flex-1 space-y-0.5">
-            <h4 className="font-black text-sm tracking-tight">Install KUFF App</h4>
+            <h4 className="font-black text-sm tracking-tight">Install RiVuG App</h4>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Faster access & notifications</p>
           </div>
           <div className="flex gap-2">
